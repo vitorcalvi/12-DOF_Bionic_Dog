@@ -1,1 +1,2 @@
-# 12-DOF_Bionic_Dog
+# WAVEGO
+WAVEGO, An Open Source Bionic Dog-Like Robot Powered By Raspberry Pi
