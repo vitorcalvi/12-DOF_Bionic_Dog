@@ -12,7 +12,8 @@ echo 'KERNEL=="ttyUSB[0-9]*",MODE="0666"' > /etc/udev/rules.d/99-serial.rules
 
 ## Docker USB Privilegis
 ```
-docker run -itd -v /dev:/dev --privileged vcalvi/rpi4-orange-ai-stick:v1.2 /bin/bash
+docker run -itd -v /dev:/dev --privileged vcalvi/ra162ee0f35b9pi4-orange-ai-stick:v1.1
+docker exec -it a162ee0f35b9 /bin/bash
 
 ```
 
