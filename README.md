@@ -46,6 +46,13 @@ wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/
 ## SSH on Container
 - https://adamtheautomator.com/ssh-into-docker-container/
 
+## zsh on docker
+- https://github.com/deluan/zsh-in-docker
+
+## Install opencv
+```
+
+
 ---
 
 ## Orange Pi Resources
