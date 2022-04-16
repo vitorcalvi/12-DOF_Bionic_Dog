@@ -12,8 +12,8 @@ echo 'KERNEL=="ttyUSB[0-9]*",MODE="0666"' > /etc/udev/rules.d/99-serial.rules
 
 ## Docker USB Privilegis
 ```
-docker run -itd -v /dev:/dev --privileged vcalvi/ra162ee0f35b9pi4-orange-ai-stick:v1.1
-docker exec -it a162ee0f35b9 /bin/bash
+docker run -itd -v /dev:/dev --privileged vcalvi/rpi4-orange-ai-stick:v3.1
+docker exec -it 82fbfcd90ac2 /bin/bash
 
 ```
 
@@ -33,7 +33,7 @@ apt-get update && apt-get install ntp -y && cp -p /etc/ntp.conf /etc/ntp.conf.de
 
 ### Install GTISDK
 ```
-wget http://192.168.1.50/home/vi/storage/128GB/api/public/dl/al0oQfpc -O GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz && tar -zxvf  GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
+wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz -O GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz && tar -zxvf  GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
 
 ```
 
