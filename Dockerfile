@@ -41,6 +41,17 @@ RUN rm GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
 
 #RUN pip install scikit-build
 #RUN pip install opencv-python
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/build-opencv.sh
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/download-opencv.sh
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/install-deps.sh
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/test.py
+RUN chmod +x *.sh
+RUN ./download-opencv.sh
+RUN ./install-deps.sh
+RUN ./build-opencv.sh
+RUN cd ~/opencv/opencv-4.1.2/build
+RUN make install
+
 
 ## SERVER OPENSSH
 RUN apt-get install -y openssh-server
