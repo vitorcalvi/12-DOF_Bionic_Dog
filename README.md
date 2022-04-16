@@ -1,5 +1,5 @@
 # Docker build
-docker build -t vcalvi/rpi4-orangePi-AI-Stick:v1.0 .
+docker build -t vcalvi/rpi4-orangepi-ai-stick:v1.0 .
 
 
 
