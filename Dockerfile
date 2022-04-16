@@ -36,3 +36,10 @@ RUN apt install python-pip -y
 RUN python -m pip install --upgrade
 RUN python -m pip install setuptools
 RUN python -m pip install --user Python/Lib/gtiClassify/
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo 'root:mypassword' | chpasswd
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
