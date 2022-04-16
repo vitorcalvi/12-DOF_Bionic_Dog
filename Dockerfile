@@ -2,8 +2,8 @@ FROM raspbian/stretch
 #LABEL maintainer="Vitones"
 RUN apt-get update && apt-get upgrade -y
 #RUN apt-get install python3-pip python3-dev -y
-#RUN apt-get install wget curl nano git iputils-ping pciutils -y
-#RUN apt-get install bash net-tools apt-utils -y
+RUN apt-get install wget curl nano git iputils-ping pciutils -y
+RUN apt-get install bash net-tools apt-utils -y
 
 #RUN wget http://192.168.1.50:9000/tensorflow-compilations/intel_OK/tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl 
 #RUN pip3 install ./tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl
