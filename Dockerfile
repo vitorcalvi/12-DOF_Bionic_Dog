@@ -17,16 +17,7 @@ RUN apt-get install net-tools apt-utils -y
 #RUN pip3 install tensorflow-gpu
 #RUN pip3 install tqdm 
 
-
-## FROM GTI2801 Manual
-#RUN DEBIAN_FRONTEND=noninteractive TZ=America/Sao_Paulo apt-get -y install tzdata
-#RUN apt install software-properties-common -y
-#RUN add-apt-repository ppa:linuxuprising/libpng12 
-#RUN apt update 
-#RUN apt install libpng-dev -y
-#RUN apt install libx11-dev libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libjpeg-dev python-numpy python-tk -y
-#RUN apt install libopencv-dev python3-opencv usbutils -y
-#RUN apt install libusb-1.0-0-dev sudo -y
+RUN apt-get install usbutils -y
 RUN apt install udev wget -y
 RUN wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz -O GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz && tar -zxvf  GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
 
@@ -38,7 +29,6 @@ RUN python -m pip install setuptools
 #RUN python -m pip install --user Python/Lib/gtiClassify/
 RUN rm GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
 
-# Default powerline10k theme, no plugins installed
 
 #RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
 #    -t https://github.com/denysdovhan/spaceship-prompt \
@@ -49,7 +39,10 @@ RUN rm GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
 #    -p https://github.com/zsh-users/zsh-autosuggestions \
 #    -p https://github.com/zsh-users/zsh-completions
 
+#RUN pip install scikit-build
+#RUN pip install opencv-python
 
+## SERVER OPENSSH
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 RUN echo 'root:mypassword' | chpasswd
