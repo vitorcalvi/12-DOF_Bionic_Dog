@@ -12,7 +12,7 @@ echo 'KERNEL=="ttyUSB[0-9]*",MODE="0666"' > /etc/udev/rules.d/99-serial.rules
 
 ## Docker USB Privilegis
 ```
-docker run -itd -v /dev:/dev -p 2222:22 --privileged vcalvi/rpi4-orangepi-ai-stick:v1.0
+docker run -itd -v /dev:/dev -p 2222:22 --privileged -v /opt/vc:/opt/vc --env LD_LIBRARY_PATH=/opt/vc/lib vcalvi/rpi4-orangepi-ai-stick:v1.0
 docker exec -it 82fbfcd90ac2 /bin/bash
 
 ```
@@ -37,6 +37,9 @@ wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/
 
 ```
 
+## Camera on Docker
+- https://www.losant.com/blog/how-to-access-the-raspberry-pi-camera-in-docker
+- 
 
 # alterar python-opencv para python3-opencv no SourceMe.env
 
