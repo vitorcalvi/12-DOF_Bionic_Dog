@@ -32,3 +32,7 @@ RUN apt install udev wget -y
 RUN wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz -O GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz && tar -zxvf  GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
 RUN apt install  libx11-dev libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libjpeg-dev python-numpy python-tk -y
 #RUN /GTISDK-Linux_armv7l_v4.5.1.0/source SourceMe.env
+RUN apt install python-pip -y
+RUN python -m pip install --upgrade
+RUN python -m pip install setuptools
+RUN python -m pip install --user Python/Lib/gtiClassify/
