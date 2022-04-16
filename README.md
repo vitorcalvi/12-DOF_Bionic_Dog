@@ -12,7 +12,7 @@ echo 'KERNEL=="ttyUSB[0-9]*",MODE="0666"' > /etc/udev/rules.d/99-serial.rules
 
 ## Docker USB Privilegis
 ```
-docker run -itd -v /dev:/dev --privileged vcalvi/rpi4-orange-ai-stick:v3.1
+docker run -itd -v /dev:/dev -p 2222:22 --privileged vcalvi/rpi4-orangepi-ai-stick:v1.0
 docker exec -it 82fbfcd90ac2 /bin/bash
 
 ```
@@ -40,7 +40,8 @@ wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/
 
 # alterar python-opencv para python3-opencv no SourceMe.env
 
-
+## SSH on Container
+- https://adamtheautomator.com/ssh-into-docker-container/
 
 ---
 
