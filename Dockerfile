@@ -49,7 +49,8 @@ RUN chmod +x *.sh
 RUN ./download-opencv.sh
 RUN ./install-deps.sh
 RUN ./build-opencv.sh
-RUN cd ~/opencv/opencv-4.1.2/build
+#RUN cd /root/opencv/opencv-4.1.2/build
+WORKDIR /root/opencv/opencv-4.1.2/build
 RUN make install
 
 
