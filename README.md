@@ -41,7 +41,8 @@ wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/
 - https://www.losant.com/blog/how-to-access-the-raspberry-pi-camera-in-docker
 - 
 
-# alterar python-opencv para python3-opencv no SourceMe.env
+# python-opencv
+- https://gist.github.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60
 
 ## SSH on Container
 - https://adamtheautomator.com/ssh-into-docker-container/
