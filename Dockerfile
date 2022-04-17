@@ -49,7 +49,6 @@ RUN chmod +x *.sh
 RUN ./download-opencv.sh
 RUN ./install-deps.sh
 RUN ./build-opencv.sh
-#RUN cd /root/opencv/opencv-4.1.2/build
 WORKDIR /root/opencv/opencv-4.1.2/build
 RUN make install
 
@@ -57,8 +56,7 @@ RUN make install
 ## SERVER OPENSSH
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
-RUN echo 'root:mypassword' | chpasswd
-RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+RUN echo 'root:1' | chpasswd
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
