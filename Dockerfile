@@ -1,17 +1,34 @@
-FROM vcalvi/rpi4-tf-ssh:v1.0
 
-ADD ./Dockerfiles_dir/opencv_install/download-opencv.sh . 
-ADD ./Dockerfiles_dir/opencv_install/install-deps.sh .
-ADD ./Dockerfiles_dir/opencv_install/build-opencv.sh .
-RUN chmod +x *.sh
+#FROM vcalvi/rpi4-tf-ssh:v1.0
+#FROM vcalvi/rpi4-tf-opencv-ssh:v1.0
+FROM vcalvi/rpi4-tf-opencv-ssh-orangepi_ai:v1.0
 
-RUN ./download-opencv.sh
-RUN ./install-deps.sh
-RUN ./build-opencv.sh
+## AUDIO HAT
+RUN git clone https://github.com/waveshare/WM8960-Audio-HAT
+RUN apt-get install -y \ 
+	raspberrypi-kernel-headers \
+	raspberrypi-kernel \
+	dkms \
+	i2c-tools \
+	libasound2-plugins
 
-#RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/test.py
-WORKDIR /root/opencv/opencv-4.5.5/build
-RUN make install
+
+#WORKDIR WM8960-Audio-HAT/
+#RUN ./install.sh 
+
+
+## RESPEAKER
+WORKDIR /
+RUN git clone https://github.com/respeaker/seeed-voicecard.git
+#RUN apt-get -y install \
+#	linux-raspi \
+#	linux-headers-raspi \
+#	linux-image-raspi \
+
+WORKDIR seeed-voicecard/
+RUN ./install.sh
+
+
 
 
 
