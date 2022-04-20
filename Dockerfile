@@ -57,7 +57,7 @@ RUN make install
 ## SERVER OPENSSH
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
-RUN echo 'root:mypassword' | chpasswd
+RUN echo 'root:1' | chpasswd
 RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 EXPOSE 22

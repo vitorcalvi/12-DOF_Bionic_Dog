@@ -1,0 +1,97 @@
+FROM raspbian/stretch
+
+# dialog error in the middle of instalation
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+RUN sudo apt-get install -y -q
+
+
+RUN apt-get update && apt-get -y install --no-install-recommends \ 
+	gcc \
+	g++ \
+	gfortran \
+	libopenblas-dev \
+	libblas-dev \
+	liblapack-dev \
+	libatlas-base-dev \
+	libhdf5-dev \
+	libhdf5-100 \
+	pkg-config \
+	python3 \
+	python3-dev \
+	python3-pip \
+	python3-setuptools \
+	pybind11-dev \
+	wget
+
+RUN python3 -m pip install --upgrade pip
+RUN wget https://storage.googleapis.com/tensorflow/raspberrypi/tensorflow-2.1.0-cp35-none-linux_armv7l.whl
+RUN pip3 install tensorflow-*.whl
+RUN rm *.whl
+
+RUN apt-get install -y build-essential
+RUN apt-get -y install libjpeg-dev libpng-dev libtiff-dev
+RUN apt-get -y install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+RUN apt-get -y install libxvidcore-dev libx264-dev
+RUN apt-get install -y python3-dev
+RUN apt-get -y install libgtk2.0-dev
+
+
+##################
+# INSTALL OPENCV #
+##################
+
+## https://github.com/opencv/opencv/releases
+#ENV OPENCV_VERSION=4.5.4
+
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/build-opencv.sh
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/download-opencv.sh
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/install-deps.sh
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/test.py
+RUN chmod +x *.sh
+RUN ./download-opencv.sh
+RUN ./install-deps.sh
+RUN ./build-opencv.sh
+WORKDIR /root/opencv/opencv-4.1.2/build
+RUN make install
+
+############################
+# install object detection #
+############################
+
+#RUN apt-get install -y protobuf-compiler
+#RUN apt-get -y install git
+#RUN mkdir /tensorflow && cd /tensorflow && git clone https://github.com/tensorflow/models.git
+#WORKDIR /tensorflow/models/research
+#RUN protoc object_detection/protos/*.proto --python_out=.
+#RUN echo 'export OBJECT_DETECTION_API_PATH=/tensorflow/models/research/object_detection' >> /root/.bashrc
+#RUN cd /tensorflow/models/research && echo "export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim:`pwd`/object_detection" >> /root/.bashrc
+
+#RUN export READTHEDOCS=True && pip3 install picamera[array]
+
+
+#CMD ["tail","-f","/dev/null"]
+
+
+##################
+## Soundcard Hat #
+##################
+
+# https://www.waveshare.com/wiki/WM8960_Audio_HAT
+
+###################
+## Respearker HAt #
+###################
+
+# https://wiki.seeedstudio.com/ReSpeaker_4_Mic_Array_for_Raspberry_Pi/
+
+
+####################
+## INSTALL OPENSSH #
+####################
+
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo 'root:1' | chpasswd
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
