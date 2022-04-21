@@ -147,17 +147,33 @@ RUN python setup.py install
 #RUN wget -qO- https://repos.influxdata.com/influxdb.key | sudo tee /etc/apt/sources.list.d/influxdb.list test $VERSION\_ID = "8" && echo "deb https://repos.influxdata.com/debian jessie stable" | sudo tee /etc/apt/sources.list.d/influxdb.list test $VERSION\_ID = "9" && echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
 
 RUN apt-get update && apt-get install influxdb -y
+#RUN echo '[http] \
+#enabled = true' >> /etc/influxdb/influxdb.conf
+# Determines whether the Flux query endpoint is enabled.
+# flux-enabled = false
 
 ## Telgraf
 RUN wget https://dl.influxdata.com/telegraf/releases/telegraf_1.22.2-1_armhf.deb 
 RUN dpkg -i telegraf_1.22.2-1_armhf.deb
+RUN wget https://raw.githubusercontent.com/vitorcalvi/12-DOF_Bionic_Dog/main/Docker/temperatureLog.conf
 
-## Grafana
-RUN apt-get install -y gnupg2 curl software-properties-common
-RUN curl https://packages.grafana.com/gpg.key | sudo apt-key add -
 
-RUN sudo apt-get update
-RUN apt-get -y install grafana
+#RUN apt-get install -y apt-transport-https
+#RUN apt-get install -y software-properties-common
+#RUN wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+#RUN echo "deb https://packages.grafana.com/oss/deb stable main" | tee -a /etc/apt/sources.list.d/grafana.list
+#RUN apt-get update
+#RUN apt-get install -y grafana
+#RUN /bin/systemctl enable grafana-server
 
-ENTRYPOINT service influxdb start && service ssh start && service grafana start && bash
 
+#ENTRYPOINT service influxdb start && service ssh start && service grafana-server start && bash
+#RUN nohup telegraf --config temperatureLog.conf &
+
+RUN echo '[http]' >> /etc/influxdb/influxdb.conf
+RUN echo 'enabled = true' >> /etc/influxdb/influxdb.conf
+
+
+ENTRYPOINT service influxdb start && service ssh start && bash
+
+EXPOSE 8086
