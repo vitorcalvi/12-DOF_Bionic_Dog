@@ -35,7 +35,17 @@ RUN git clone https://github.com/respeaker/seeed-voicecard.git
 #######
 # https://github.com/geeekpi/upsplus
 RUN git clone https://github.com/geeekpi/upsplus
-WORKDIR upsplus/
-RUN ./install.sh
+#WORKDIR upsplus/
+#RUN ./install.sh
 
+
+######
+# DHT11
+#######
+RUN sudo apt-get install build-essential python-dev -y
+RUN git clone https://github.com/adafruit/Adafruit_Python_DHT.git
+WORKDIR Adafruit_Python_DHT
+RUN python setup.py install
+#WORKDIR examples/
+#RUN python AdafruitDHT.py 11 17
 
