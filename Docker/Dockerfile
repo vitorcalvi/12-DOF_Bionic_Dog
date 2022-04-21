@@ -156,6 +156,7 @@ RUN apt-get update && apt-get install influxdb -y
 ## Telgraf
 RUN wget https://dl.influxdata.com/telegraf/releases/telegraf_1.22.2-1_armhf.deb 
 RUN dpkg -i telegraf_1.22.2-1_armhf.deb
+ARG CACHEBUST=1 
 RUN wget https://raw.githubusercontent.com/vitorcalvi/12-DOF_Bionic_Dog/main/Docker/temperatureLog.conf
 
 
@@ -168,7 +169,7 @@ RUN wget https://raw.githubusercontent.com/vitorcalvi/12-DOF_Bionic_Dog/main/Doc
 #RUN apt-get install -y grafana
 #RUN /bin/systemctl enable grafana-server
 
-
+RUN apt install -y curl  net-tools
 
 ENTRYPOINT service influxdb start && service ssh start && bash
 
