@@ -29,14 +29,9 @@ CMD ["/usr/sbin/sshd", "-D"]
 ## https://github.com/opencv/opencv/releases
 #ENV OPENCV_VERSION=4.5.4
 
-RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a$
-RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a$
-RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a$
-RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a$
-RUN chmod +x *.sh
-RUN ./download-opencv.sh
-RUN ./install-deps.sh
-RUN ./build-opencv.sh
+RUN wget -O - https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/download-opencv.sh | bash
+RUN wget -O - https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/install-deps.sh | bash
+RUN wget -O - https://gist.githubusercontent.com/vitorcalvi/5482f1a3006f42d4f9a336bcfc557bf0/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/build-opencv.sh | bash
 WORKDIR /root/opencv/opencv-4.1.2/build
 RUN make install
 
@@ -46,35 +41,35 @@ RUN make install
 ## TENSORFLOW
 ##############
 
-RUN apt-get update && apt-get -y install --no-install-recommends \ 
-	gcc \
-	g++ \
-	gfortran \
-	libopenblas-dev \
-	libblas-dev \
-	liblapack-dev \
-	libatlas-base-dev \
-	libhdf5-dev \
-	libhdf5-100 \
-	pkg-config \
-	python3 \
-	python3-dev \
-	python3-pip \
-	python3-setuptools \
-	pybind11-dev \
-	wget
+#RUN apt-get update && apt-get -y install --no-install-recommends \ 
+#	gcc \
+#	g++ \
+#	gfortran \
+#	libopenblas-dev \
+#	libblas-dev \
+#	liblapack-dev \
+#	libatlas-base-dev \
+#	libhdf5-dev \
+#	libhdf5-100 \
+#	pkg-config \
+#	python3 \
+#	python3-dev \
+#	python3-pip \
+#	python3-setuptools \
+#	pybind11-dev \
+#	wget
 
-RUN python3 -m pip install --upgrade pip
-RUN wget https://storage.googleapis.com/tensorflow/raspberrypi/tensorflow-2.1.0-cp35-none-linux_armv7l.whl
-RUN pip3 install tensorflow-*.whl
-RUN rm *.whl
+#RUN python3 -m pip install --upgrade pip
+#RUN wget https://storage.googleapis.com/tensorflow/raspberrypi/tensorflow-2.1.0-cp35-none-linux_armv7l.whl
+#RUN pip3 install tensorflow-*.whl
+#RUN rm *.whl
 
-RUN apt-get install -y build-essential
-RUN apt-get -y install libjpeg-dev libpng-dev libtiff-dev
-RUN apt-get -y install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
-RUN apt-get -y install libxvidcore-dev libx264-dev
-RUN apt-get install -y python3-dev
-RUN apt-get -y install libgtk2.0-dev
+#RUN apt-get install -y build-essential
+#RUN apt-get -y install libjpeg-dev libpng-dev libtiff-dev
+#RUN apt-get -y install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+#RUN apt-get -y install libxvidcore-dev libx264-dev
+#RUN apt-get install -y python3-dev
+#RUN apt-get -y install libgtk2.0-dev
 
 
 
@@ -98,8 +93,9 @@ RUN apt install \
 RUN python -m pip install setuptools
 
 # Instalation
-RUN wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/GTISDK-Linux_armv7l_v4.5.1.0_19$
-RUN tar zxvf GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
+RUN wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/GTISDK/arm7l/GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
+RUN tar -zxvf GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
+RUN install
 RUN rm GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
 
 
