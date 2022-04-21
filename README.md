@@ -1,3 +1,8 @@
+
+### Docker RUN
+docker run -it -v /dev:/dev -p 2222:22 --privileged -v /opt/vc:/opt/vc -v /sys:/sys --env LD_LIBRARY_PATH=/opt/vc/lib vcalvi/rpi4-tf-opencv-ssh-orangepi_ai-hats:v1.0 /bin/bash
+
+
 # Docker build
 docker build -t vcalvi/rpi4-orangepi-ai-stick:v1.0 .
 

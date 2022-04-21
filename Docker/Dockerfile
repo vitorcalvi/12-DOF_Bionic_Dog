@@ -1,50 +1,38 @@
-FROM raspbian/stretch
-#LABEL maintainer="Vitones"
+## Project 12-dof w/ artifcial brain
+
+FROM raspbian/stretch:latest
+
+
+
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install wget curl nano git iputils-ping -y
-RUN apt-get install net-tools apt-utils -y
+RUN apt-get update 
+# dialog error in the middle of instalation
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+RUN sudo apt-get install -y -q
 
-#RUN wget http://192.168.1.50:9000/tensorflow-compilations/intel_OK/tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl 
-#RUN pip3 install ./tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl
-#RUN pip3 install numpy
-#RUN python -c 'import tensorflow as tf; print(tf.__version__)'
-#RUN python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+####################
+## INSTALL OPENSSH #
+####################
 
-#RUN wget http://192.168.1.50:9000/CUDNN/linux/cudnn-local-repo-ubuntu2004-8.3.3.40_1.0-1_amd64.deb
-#RUN dpkg -i cudnn-local-repo-ubuntu2004-8.3.3.40_1.0-1_amd64.deb
-#RUN apt-key add /var/cudnn-local-repo-ubuntu2004-8.3.3.40/7fa2af80.pub
-#RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F60F4B3D7FA2AF80
-#RUN pip3 install tensorflow-gpu
-#RUN pip3 install tqdm 
-
-RUN apt-get install usbutils -y
-RUN apt install udev wget -y
-RUN wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz -O GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz && tar -zxvf  GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
-
-RUN apt install  libx11-dev libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libjpeg-dev python-numpy python-tk -y
-RUN apt install python-pip -y
-RUN python -m pip install --upgrade
-RUN python -m pip install setuptools
-
-#RUN python -m pip install --user Python/Lib/gtiClassify/
-RUN rm GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo 'root:1' | chpasswd
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
 
 
-#RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
-#    -t https://github.com/denysdovhan/spaceship-prompt \
-#    -a 'SPACESHIP_PROMPT_ADD_NEWLINE="false"' \
-#    -a 'SPACESHIP_PROMPT_SEPARATE_LINE="false"' \
-#    -p git \
-#    -p ssh-agent \
-#    -p https://github.com/zsh-users/zsh-autosuggestions \
-#    -p https://github.com/zsh-users/zsh-completions
+##################
+# INSTALL OPENCV #
+##################
 
-#RUN pip install scikit-build
-#RUN pip install opencv-python
-RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/build-opencv.sh
-RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/download-opencv.sh
-RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/install-deps.sh
-RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a27962870382ed2e/test.py
+## https://github.com/opencv/opencv/releases
+#ENV OPENCV_VERSION=4.5.4
+
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a$
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a$
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a$
+RUN wget https://gist.githubusercontent.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60/raw/d3d8e2f2b619ff9d266d4614a$
 RUN chmod +x *.sh
 RUN ./download-opencv.sh
 RUN ./install-deps.sh
@@ -53,14 +41,126 @@ WORKDIR /root/opencv/opencv-4.1.2/build
 RUN make install
 
 
-## SERVER OPENSSH
-RUN apt-get install -y openssh-server
-RUN mkdir /var/run/sshd
-RUN echo 'root:1' | chpasswd
-<<<<<<< HEAD
-RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
-=======
->>>>>>> c7351f01a3738d00daf9347ea43d904861a736e2
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+
+##############
+## TENSORFLOW
+##############
+
+RUN apt-get update && apt-get -y install --no-install-recommends \ 
+	gcc \
+	g++ \
+	gfortran \
+	libopenblas-dev \
+	libblas-dev \
+	liblapack-dev \
+	libatlas-base-dev \
+	libhdf5-dev \
+	libhdf5-100 \
+	pkg-config \
+	python3 \
+	python3-dev \
+	python3-pip \
+	python3-setuptools \
+	pybind11-dev \
+	wget
+
+RUN python3 -m pip install --upgrade pip
+RUN wget https://storage.googleapis.com/tensorflow/raspberrypi/tensorflow-2.1.0-cp35-none-linux_armv7l.whl
+RUN pip3 install tensorflow-*.whl
+RUN rm *.whl
+
+RUN apt-get install -y build-essential
+RUN apt-get -y install libjpeg-dev libpng-dev libtiff-dev
+RUN apt-get -y install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+RUN apt-get -y install libxvidcore-dev libx264-dev
+RUN apt-get install -y python3-dev
+RUN apt-get -y install libgtk2.0-dev
+
+
+
+################
+## ORANGE PI AI
+###############
+
+# DEPENDENCIES
+RUN apt-get install usbutils udev -y
+RUN apt install \
+        libx11-dev \
+        libgtk2.0-dev \
+        pkg-config \
+        libavcodec-dev \
+        libavformat-dev \
+        libswscale-dev \
+        libjpeg-dev \
+        python-numpy \
+        python-tk -y
+
+RUN python -m pip install setuptools
+
+# Instalation
+RUN wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/arm7l/GTISDK-Linux_armv7l_v4.5.1.0_19$
+RUN tar zxvf GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
+RUN rm GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
+
+
+##############
+## AUDIO HAT #
+##############
+
+WORKDIR /
+RUN git clone https://github.com/waveshare/WM8960-Audio-HAT
+
+RUN apt-get install -y \ 
+	raspberrypi-kernel-headers \
+	raspberrypi-kernel \
+	dkms \
+	i2c-tools \
+	libasound2-plugins
+WORKDIR WM8960-Audio-HAT/
+RUN ./install.sh 
+
+
+##############
+## RESPEAKER #
+##############
+RUN git clone https://github.com/respeaker/seeed-voicecard.git
+WORKDIR seeed-voicecard/
+RUN ./install.sh
+
+
+#######
+# UPS #
+#######
+# https://github.com/geeekpi/upsplus
+RUN git clone https://github.com/geeekpi/upsplus
+WORKDIR upsplus/
+RUN ./install.sh
+
+
+###########################
+# DHT11, Telgraf, Grafana #
+###########################
+
+RUN sudo apt-get install build-essential python-dev -y
+RUN git clone https://github.com/adafruit/Adafruit_Python_DHT.git
+WORKDIR Adafruit_Python_DHT
+RUN python setup.py install
+
+### InfluxDB
+#RUN wget -qO- https://repos.influxdata.com/influxdb.key | sudo tee /etc/apt/sources.list.d/influxdb.list test $VERSION\_ID = "8" && echo "deb https://repos.influxdata.com/debian jessie stable" | sudo tee /etc/apt/sources.list.d/influxdb.list test $VERSION\_ID = "9" && echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+
+RUN apt-get update && apt-get install influxdb -y
+ENTRYPOINT service influxdb start && service ssh start && && bash
+
+## Telgraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf_1.22.2-1_armhf.deb 
+RUN dpkg -i telegraf_1.22.2-1_armhf.deb
+
+## Grafana
+RUN apt-get install -y gnupg2 curl software-properties-common
+RUN curl https://packages.grafana.com/gpg.key | sudo apt-key add -
+
+RUN sudo apt-get update
+RUN apt-get -y install grafana
+
+RUN systemctl enable --now grafana-server
