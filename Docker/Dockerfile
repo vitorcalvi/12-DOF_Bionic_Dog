@@ -143,41 +143,8 @@ RUN git clone https://github.com/adafruit/Adafruit_Python_DHT.git
 WORKDIR Adafruit_Python_DHT
 RUN python setup.py install
 
-### InfluxDB
-#RUN wget -qO- https://repos.influxdata.com/influxdb.key | sudo tee /etc/apt/sources.list.d/influxdb.list test $VERSION\_ID = "8" && echo "deb https://repos.influxdata.com/debian jessie stable" | sudo tee /etc/apt/sources.list.d/influxdb.list test $VERSION\_ID = "9" && echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
 
-RUN apt-get update && apt-get install influxdb -y
+ENTRYPOINT  service ssh start && bash
 
-#RUN echo '[http]' >> /etc/influxdb/influxdb.conf
-#RUN echo 'enabled = true' >> /etc/influxdb/influxdb.conf
-RUN echo '[http]' >> /etc/influxdb/influxdb.conf
-
-RUN echo 'enabled = true' >> /etc/influxdb/influxdb.conf
-RUN echo 'bind-address = ":8086"' >> /etc/influxdb/influxdb.conf
-#RUN echo 'auth-enabled = true' >> /etc/influxdb/influxdb.conf
-
-
-
-## Telgraf
-RUN wget https://dl.influxdata.com/telegraf/releases/telegraf_1.22.2-1_armhf.deb 
-RUN dpkg -i telegraf_1.22.2-1_armhf.deb
-
-ARG CACHEBUST=0
-RUN wget https://raw.githubusercontent.com/vitorcalvi/12-DOF_Bionic_Dog/main/Docker/temperatureLog.conf
-
-
-# Grafana
-#RUN apt-get install -y apt-transport-https
-#RUN apt-get install -y software-properties-common
-#RUN wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
-#RUN echo "deb https://packages.grafana.com/oss/deb stable main" | tee -a /etc/apt/sources.list.d/grafana.list
-#RUN apt-get update
-#RUN apt-get install -y grafana
-#RUN /bin/systemctl enable grafana-server
-
-RUN apt install -y curl  net-tools
-
-ENTRYPOINT service influxdb start && service ssh start && bash
-
-EXPOSE 8086
-EXPOSE 3000
+#EXPOSE 8086
+#EXPOSE 3000
