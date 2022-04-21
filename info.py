@@ -37,3 +37,5 @@ def get_swap_info():
     """ Return swap memory  usage using psutil """
     swap_cent = psutil.swap_memory()[3]
     return str(swap_cent)
+
+get_cpu_tempfunc()
