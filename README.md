@@ -2,7 +2,6 @@
 docker build -t vcalvi/rpi4-orangepi-ai-stick:v1.0 .
 
 
-
 ## Udev - USB Privilegies on Docker
 - https://www.losant.com/blog/how-to-access-serial-devices-in-docker
 ```
