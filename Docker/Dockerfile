@@ -150,13 +150,19 @@ RUN apt-get update && apt-get install influxdb -y
 
 #RUN echo '[http]' >> /etc/influxdb/influxdb.conf
 #RUN echo 'enabled = true' >> /etc/influxdb/influxdb.conf
+RUN echo '[http]' >> /etc/influxdb/influxdb.conf
+
+RUN echo 'enabled = true' >> /etc/influxdb/influxdb.conf
+RUN echo 'bind-address = ":8086"' >> /etc/influxdb/influxdb.conf
+#RUN echo 'auth-enabled = true' >> /etc/influxdb/influxdb.conf
 
 
 
 ## Telgraf
 RUN wget https://dl.influxdata.com/telegraf/releases/telegraf_1.22.2-1_armhf.deb 
 RUN dpkg -i telegraf_1.22.2-1_armhf.deb
-ARG CACHEBUST=1 
+
+ARG CACHEBUST=0
 RUN wget https://raw.githubusercontent.com/vitorcalvi/12-DOF_Bionic_Dog/main/Docker/temperatureLog.conf
 
 
