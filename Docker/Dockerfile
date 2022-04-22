@@ -119,6 +119,10 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 
 
 EXPOSE 22
-ENTRYPOINT  service ssh start && bash
+#ENTRYPOINT  service ssh start && bash
+RUN apt upgrade -y
+RUN pip3 install requests Adafruit_DHT influxdb
+RUN pip3 install configparser
+ENTRYPOINT ["/root/dof_bionic_dog/Docker/docker_entrypoint.sh"]
 #ENTRYPOINT bash
 #EXPOSE 3000
