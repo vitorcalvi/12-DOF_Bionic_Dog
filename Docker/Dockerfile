@@ -99,6 +99,8 @@ WORKDIR Adafruit_Python_DHT
 RUN python setup.py install
 
 
+
+
 ####################
 ## INSTALL OPENSSH #
 ####################

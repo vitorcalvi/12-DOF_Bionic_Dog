@@ -1,0 +1,9 @@
+curl -G http://192.168.1.50:8086/query \
+  -u telegraf:secretpassword \
+  --data-urlencode "q=SHOW DATABASES"
+
+
+  curl -G 'http://192.168.1.50:8086/query?pretty=true' \
+   -u telegraf:secretpassword \
+   --data-urlencode "db=sensor_data" --data-urlencode \
+    'q=SELECT * FROM "dht11-measure"'

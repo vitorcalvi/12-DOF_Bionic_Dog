@@ -56,19 +56,19 @@ def get_reading(config):
     return float(data[0]['fields']['temperature_f'])
 
 
-# def post_alert(config, trigger, value):
-#     # IFTTT Webhook Info
-#     ifttt_url = "https://maker.ifttt.com/trigger/{}/with/key/"
-#     ifttt_key = config['alerting_settings']['ifttt_key']
+def post_alert(config, trigger, value):
+    # IFTTT Webhook Info
+    ifttt_url = "https://maker.ifttt.com/trigger/{}/with/key/"
+    ifttt_key = config['alerting_settings']['ifttt_key']
 
-#     # 'value' will be sent to IFTTT and can be included in alert
-#     data = {"value1": value}
+    # 'value' will be sent to IFTTT and can be included in alert
+    data = {"value1": value}
 
-#     # Pass in event name to trigger appropriately
-#     ifttt_event_url = ifttt_url.format(trigger) + ifttt_key
+    # Pass in event name to trigger appropriately
+    ifttt_event_url = ifttt_url.format(trigger) + ifttt_key
 
-#     # Post it!
-#     requests.post(ifttt_event_url, json=data)
+    # Post it!
+    requests.post(ifttt_event_url, json=data)
 
 
 def read_config():
@@ -103,7 +103,7 @@ def main():
         # This prevents us from alerting every temperature check
         if len(threshold_counter) == int(config['alerting_settings']['threshold_count']):
             temperature_alert = config['alerting_settings']['ifttt_event_name']
-            # post_alert(config, temperature_alert, current_temperature)
+            post_alert(config, temperature_alert, current_temperature)
             # Reset counter
             threshold_counter = []
         # Sleep the interval
