@@ -26,6 +26,43 @@ WORKDIR /root/opencv/opencv-4.1.2/build
 RUN make install
 
 
+
+##############
+## TENSORFLOW
+##############
+
+#RUN apt-get update && apt-get -y install --no-install-recommends \ 
+#	gcc \
+#	g++ \
+#	gfortran \
+#	libopenblas-dev \
+#	libblas-dev \
+#	liblapack-dev \
+#	libatlas-base-dev \
+#	libhdf5-dev \
+#	libhdf5-100 \
+#	pkg-config \
+#	python3 \
+#	python3-dev \
+#	python3-pip \
+#	python3-setuptools \
+#	pybind11-dev \
+#	wget
+
+#RUN python3 -m pip install --upgrade pip
+#RUN wget https://storage.googleapis.com/tensorflow/raspberrypi/tensorflow-2.1.0-cp35-none-linux_armv7l.whl
+#RUN pip3 install tensorflow-*.whl
+#RUN rm *.whl
+
+#RUN apt-get install -y build-essential
+#RUN apt-get -y install libjpeg-dev libpng-dev libtiff-dev
+#RUN apt-get -y install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+#RUN apt-get -y install libxvidcore-dev libx264-dev
+#RUN apt-get install -y python3-dev
+#RUN apt-get -y install libgtk2.0-dev
+
+
+
 ################
 ## ORANGE PI AI
 ###############
@@ -50,6 +87,9 @@ RUN wget http://192.168.1.50:9000/KHADAS-PI-AI-STICK/Orange%20PI%20AI%20Stick/GT
 RUN tar -zxvf GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
 RUN rm GTISDK-Linux_armv7l_v4.5.1.0_190823.tgz
 
+##########
+## HATS
+##########
 
 ##########
 ## AUDIO #
@@ -103,20 +143,18 @@ RUN python setup.py install
 ## INSTALL OPENSSH #
 ####################
 
-RUN apt-get update && apt-get install -y openssh-server
+RUN apt-get install -y openssh-server
 #RUN mkdir /var/run/sshd
 RUN echo 'root:1' | chpasswd
-#RUN sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
-#RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 RUN echo 'export NOTVISIBLE="in users profile"' >> ~/.bashrc
 RUN echo "export VISIBLE=now" >> /etc/profile
+EXPOSE 22
 #CMD ["/usr/sbin/sshd", "-D"]
 
 
 
-
-EXPOSE 22
 ENTRYPOINT  service ssh start && bash
-#ENTRYPOINT bash
+
 #EXPOSE 3000
